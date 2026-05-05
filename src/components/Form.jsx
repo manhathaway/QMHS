@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import css from './Form.module.css';
 import { FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES } from '../data';
 
@@ -24,6 +24,7 @@ const buildInitialState = () => {
 
 const Form = () => {
     const [formData, setFormData] = useState(buildInitialState());
+    useEffect(() => { console.log(formData) }, [formData]);
 
     const selectedSalesman = useMemo(() => {
         return SALESMEN.list.find(p => p.name === formData.salesman);
@@ -80,94 +81,119 @@ const Form = () => {
     };
 
     return (
-        <form id={css.container}>
-            {FORM_SCHEMA.map(field => {
-                if (field.type === 'repeatable') return null;
+        <>
+            <form id={css.container}>
+                {FORM_SCHEMA.map(field => {
+                    if (field.type === 'repeatable') return null;
 
-                return (
-                    <div key={field.id} className={css.entryContainer}>
-                        <label className={css.label}>{field.label}</label>
+                    return (
+                        <div key={field.id} className={css.entryContainer}>
+                            <label className={css.label}>{field.label}</label>
 
-                        {field.type === 'select' ? (
-                            <select
-                                className={css.select}
-                                value={formData[field.id]}
-                                onChange={(e) => updateField(field.id, e.target.value)}
-                            >
-                                {SELECT_DATA[field.data].list.map((item, index) => (
-                                    <option key={index} value={item.name}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : field.type === 'textarea' ? (
-                            <textarea
-                                className={css.textarea}
-                                value={formData[field.id]}
-                                onChange={(e) => updateField(field.id, e.target.value)}
-                                disabled={!isEnabled(field)}
-                            />
-                        ) : (
-                            <input
-                                className={css.input}
-                                style={{ width: field.type !== 'checkbox' ? '100%' : '30px' }}
-                                type={field.type}
-                                value={field.type !== 'checkbox' ? formData[field.id] : undefined}
-                                checked={field.type === 'checkbox' ? formData[field.id] : undefined}
-                                onChange={(e) =>
-                                    field.type === 'checkbox'
-                                        ? updateCheckbox(field.id, e.target.checked)
-                                        : updateField(field.id, e.target.value)
-                                }
-                                disabled={!isEnabled(field)}
-                            />
-                        )}
-                    </div>
-                );
-            })}
-
-            {FORM_SCHEMA.filter(f => f.type === 'repeatable').map(field => {
-                if (!formData[field.toggle]) return null;
-
-                return (
-                    <div key={field.id} className={css.entryContainer}>
-                        <label className={css.label}>{field.label}</label>
-                        <button
-                            className={`${css.button} ${css.addButton}`}
-                            type="button"
-                            onClick={() => addRow(field.id)}
-                        >
-                            +
-                        </button>
-                        
-                        <div className={css.dynamicContainer}>
-                            {formData[field.id].map((row, i) => (
-                                <div key={i} className={css.dynamicRow}>
-                                    {field.fields.map(f => (
-                                        <input
-                                            className={css.input}
-                                            key={f.key}
-                                            placeholder={f.placeholder}
-                                            value={row[f.key] || ''}
-                                            onChange={(e) =>
-                                                updateRow(field.id, i, f.key, e.target.value)
-                                            }
-                                        />
+                            {field.type === 'select' ? (
+                                <select
+                                    className={css.select}
+                                    value={formData[field.id]}
+                                    onChange={(e) => updateField(field.id, e.target.value)}
+                                >
+                                    {SELECT_DATA[field.data].list.map((item, index) => (
+                                        <option key={index} value={item.name}>
+                                            {item.name}
+                                        </option>
                                     ))}
-                                    <button
-                                        className={`${css.button} ${css.removeButton}`}
-                                        type="button"
-                                        onClick={() => removeRow(field.id, i)}
-                                    >
-                                        x
-                                    </button>
-                                </div>
-                            ))}
+                                </select>
+                            ) : field.type === 'textarea' ? (
+                                <textarea
+                                    className={css.textarea}
+                                    value={formData[field.id]}
+                                    onChange={(e) => updateField(field.id, e.target.value)}
+                                    disabled={!isEnabled(field)}
+                                />
+                            ) : (
+                                <input
+                                    className={css.input}
+                                    style={{ width: field.type !== 'checkbox' ? '100%' : '30px' }}
+                                    type={field.type}
+                                    value={field.type !== 'checkbox' ? formData[field.id] : undefined}
+                                    checked={field.type === 'checkbox' ? formData[field.id] : undefined}
+                                    onChange={(e) =>
+                                        field.type === 'checkbox'
+                                            ? updateCheckbox(field.id, e.target.checked)
+                                            : updateField(field.id, e.target.value)
+                                    }
+                                    disabled={!isEnabled(field)}
+                                />
+                            )}
                         </div>
-                    </div>
-                );
-            })}
-        </form>
+                    );
+                })}
+
+                {FORM_SCHEMA.filter(f => f.type === 'repeatable').map(field => {
+                    if (!formData[field.toggle]) return null;
+
+                    return (
+                        <div key={field.id} className={css.addContainer}>
+                            <label className={css.label}>{field.label}</label>
+                            <button
+                                className={`${css.button} ${css.addButton}`}
+                                type="button"
+                                onClick={() => addRow(field.id)}
+                            >
+                                +
+                            </button>
+
+                            <div className={css.dynamicContainer}>
+                                {formData[field.id].map((row, i) => (
+                                    <div key={i} className={css.dynamicRow}>
+                                        {field.fields.map(f => (
+                                            <input
+                                                className={css.input}
+                                                key={f.key}
+                                                placeholder={f.placeholder}
+                                                value={row[f.key] || ''}
+                                                onChange={(e) =>
+                                                    updateRow(field.id, i, f.key, e.target.value)
+                                                }
+                                            />
+                                        ))}
+                                        <button
+                                            className={`${css.button} ${css.removeButton}`}
+                                            type="button"
+                                            onClick={() => removeRow(field.id, i)}
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
+            </form>
+            <dialog id="dialog" className={css.dialog}>
+                <div id={css.dialogContainer}>
+                    <h1>(Form Data Here)</h1>
+                    <button
+                        id={css.closeButton}
+                        className={css.button}
+                        commandfor="dialog"
+                        command="close"
+                    >
+                        Close
+                    </button>
+                </div>
+            </dialog>
+            <div id={css.submitButtonContainer}>
+                <button
+                    id={css.submitButton}
+                    className={css.button}
+                    command="show-modal"
+                    commandfor="dialog"
+                >
+                    Submit
+                </button>
+            </div>
+        </>
     );
 };
 

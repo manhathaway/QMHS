@@ -9,6 +9,16 @@
     grid-template-columns: 1fr 250px;
     justify-content: space-between;
     padding-bottom: 15px;
+}
+
+.addContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 30px;
+}
+
+.entryContainer,
+.addContainer:not(:last-child) {
     border-bottom: 1px solid lightgray;
 }
 
@@ -17,8 +27,9 @@
     font-size: 1.2rem;
 }
 
-.input {
-    padding-left: 5px;
+.input,
+.select {
+    height: 30px;
 }
 
 .textarea {
@@ -27,23 +38,25 @@
 }
 
 .input,
-.select {
-    height: 30px;
-}
-
-.input,
 .textarea,
 .select {
     font-size: 1rem;
+    padding: 5px;
 }
 
 .input,
-.input:active {
+.input:active,
+.select,
+.select:active,
+.textarea,
+.textarea:active {
     border: 1px solid darkgray;
     border-radius: 2px;
 }
 
-input:focus {
+.input:focus,
+.select:focus,
+.textarea:focus {
     outline: none;
 }
 
@@ -53,8 +66,8 @@ input:focus {
 }
 
 .dynamicContainer {
-    padding: 10px;
-    
+    padding: 15px;
+
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -67,12 +80,43 @@ input:focus {
 }
 
 .button {
-    width: 30px;
     height: 30px;
+    font-size: 1rem;
 }
 
-.addButton {
-}
-
+.addButton,
 .removeButton {
+    width: 30px;
+}
+
+.dialog {
+    width: 90svw;
+    height: 90svh;
+    margin: auto;
+    border: none;
+}
+
+#dialogContainer {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#submitButtonContainer {
+    position: sticky;
+    bottom: 0;
+
+    background: white;
+    border-top: 1px solid lightgray;
+
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+#submitButton,
+#closeButton {
+    padding: 0 10px;
 }

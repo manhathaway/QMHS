@@ -4,8 +4,8 @@ const Header = () => {
 
   return (
     <div id={css.container}>
-      <h1 id={css.title}>Folder Maker</h1>
-      <h2 id={css.subtitle}>- QMHS Workflow Automation -</h2>
+      <h1 id={css.title}>Sale Entry</h1>
+      <h2 id={css.subtitle}>- QMHS Workflows -</h2>
     </div>
   )
 }
