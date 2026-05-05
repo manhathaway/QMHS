@@ -1,33 +1,83 @@
-const FORM_ELEMENTS = [
-    { title: 'Name',                id: 'name',                 type: 'input'     },
-    { title: 'New Customer?',       id: 'new_customer',         type: 'checkbox'  },
-    { title: 'Address',             id: 'address',              type: 'textarea'  },
-    { title: 'Salesman',            id: 'salesman',             type: 'select'    },
-    { title: 'City',                id: 'city',                 type: 'input'     },
-    { title: 'Email Date',          id: 'email_date',           type: 'input'     },
-    { title: 'Contract Date',       id: 'contract-date',        type: 'date'      },
-    { title: 'Sources',             id: 'sources',              type: 'select'    },
-    { title: 'Price',               id: 'price',                type: 'input'     },
-    { title: 'Deposit',             id: 'deposit',              type: 'input'     },
-    { title: 'Deposit Type',        id: 'depositType',          type: 'select'    },
-    { title: 'Financed?',           id: 'financed',             type: 'checkbox'  },
-    { title: 'Amount Financed',     id: 'amount_financed',      type: 'input'     },
-    { title: 'Account Number',      id: 'account_number',       type: 'input'     },
-    { title: 'Progress Payments?',  id: 'progress_payments',    type: 'checkbox'  },
-    { title: 'Discounts',           id: 'discounts',            type: 'checkbox'  },
+const FORM_SCHEMA = [
+    { id: 'name', label: 'Name', type: 'text' },
+
+    { id: 'new_customer', label: 'New Customer?', type: 'checkbox' },
+    {
+        id: 'address',
+        label: 'Address',
+        type: 'textarea',
+        enabledWhen: (form) => form.new_customer
+    },
+
+    { id: 'salesman', label: 'Salesman', type: 'select', data: 'salesman' },
+
+    {
+        id: 'city',
+        label: 'City',
+        type: 'text',
+        enabledWhen: (form, ctx) =>
+            ctx.selectedSalesman?.region === 'AZ'
+    },
+
+    { id: 'email_date', label: 'Email Date', type: 'text' },
+    { id: 'contract_date', label: 'Contract Date', type: 'date' },
+
+    { id: 'sources', label: 'Sources', type: 'select', data: 'sources' },
+
+    { id: 'price', label: 'Price', type: 'text' },
+    { id: 'deposit', label: 'Deposit', type: 'text' },
+    { id: 'depositType', label: 'Deposit Type', type: 'select', data: 'depositType' },
+
+    { id: 'financed', label: 'Financed?', type: 'checkbox' },
+
+    {
+        id: 'amount_financed',
+        label: 'Amount Financed',
+        type: 'text',
+        enabledWhen: (form) => form.financed
+    },
+    {
+        id: 'account_number',
+        label: 'Account Number',
+        type: 'text',
+        enabledWhen: (form) => form.financed
+    },
+
+    {
+        id: 'progress_payments',
+        label: 'Progress Payments?',
+        type: 'repeatable',
+        toggle: 'progress_payments',
+        fields: [
+            { key: 'name', placeholder: 'Payment Name' },
+            { key: 'price', placeholder: 'Payment Price' }
+        ]
+    },
+
+    {
+        id: 'discounts',
+        label: 'Discounts',
+        type: 'repeatable',
+        toggle: 'discounts',
+        includeInitial: true,
+        fields: [
+            { key: 'name', placeholder: 'Discount Name' },
+            { key: 'price', placeholder: 'Discount Price' }
+        ]
+    }
 ];
 
 const SALESMEN = {
     name: 'salesman',
     list: [
         { name: '-' },
-        { name: 'Sal',      region: 'CA',  subregion: 'SC'  },
-        { name: 'Zac',      region: 'CA',  subregion: 'SC'  },
-        { name: 'Dom',      region: 'CA',  subregion: 'SC'  },
-        { name: 'Dave',     region: 'CA',  subregion: 'NC'  },
-        { name: 'Nick B.',  region: 'CA',  subregion: 'NC'  },
-        { name: 'Chris',    region: 'AZ'                    },
-        { name: 'Nick M.',  region: 'AZ'                    }
+        { name: 'Sal', region: 'CA', subregion: 'SC' },
+        { name: 'Zac', region: 'CA', subregion: 'SC' },
+        { name: 'Dom', region: 'CA', subregion: 'SC' },
+        { name: 'Dave', region: 'CA', subregion: 'NC' },
+        { name: 'Nick B.', region: 'CA', subregion: 'NC' },
+        { name: 'Chris', region: 'AZ' },
+        { name: 'Nick M.', region: 'AZ' }
     ]
 };
 
@@ -35,24 +85,24 @@ const SOURCES = {
     name: 'sources',
     list: [
         { name: '-' },
-        { name: 'Postcard',       type: 'CI',  abbreviation: 'PC', },
-        { name: 'Park Magazine',  type: 'CI',  abbreviation: 'PM', },
-        { name: 'Web Ads.',       type: 'CI'                       },
-        { name: 'Carlyn',         type: 'WC'                       },
-        { name: 'Viki',           type: 'WC'                       },
-        { name: 'Jose',           type: 'WC'                       }
+        { name: 'Postcard' },
+        { name: 'Park Magazine' },
+        { name: 'Web Ads.' },
+        { name: 'Carlyn' },
+        { name: 'Viki' },
+        { name: 'Jose' }
     ]
 };
 
 const DEPOSIT_TYPES = {
-    name: 'deposit-types',
+    name: 'depositType',
     list: [
         { name: '-' },
-        { name: 'CC'        },
-        { name: 'Check'     },
-        { name: 'Cash'      },
-        { name: 'Synchrony' },
+        { name: 'CC' },
+        { name: 'Check' },
+        { name: 'Cash' },
+        { name: 'Synchrony' }
     ]
 };
 
-export { FORM_ELEMENTS, SALESMEN, SOURCES, DEPOSIT_TYPES };
+export { FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES };
