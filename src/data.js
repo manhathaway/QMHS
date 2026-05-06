@@ -24,6 +24,10 @@ const FORM_SCHEMA = [
 
     { id: 'sources', label: 'Sources', type: 'select', data: 'sources' },
 
+    { id: 'job_title', label: 'Job Title', type: 'text' },
+    { id: 'job_item', label: 'Job Item', type: 'text' },
+    { id: 'job_description', label: 'Job Description', type: 'textarea' },
+
     { id: 'price', label: 'Price', type: 'text' },
     { id: 'deposit', label: 'Deposit', type: 'text' },
     { id: 'depositType', label: 'Deposit Type', type: 'select', data: 'depositType' },

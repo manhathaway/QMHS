@@ -172,15 +172,28 @@ const Form = () => {
             </form>
             <dialog id="dialog" className={css.dialog}>
                 <div id={css.dialogContainer}>
-                    <h1>(Form Data Here)</h1>
-                    <button
-                        id={css.closeButton}
-                        className={css.button}
-                        commandfor="dialog"
-                        command="close"
-                    >
-                        Close
-                    </button>
+                    <div
+                        id={css.newCustomerContainer}
+                        className={css.imageContainer}
+                    ></div>
+                    <div
+                        id={css.addJobContainer}
+                        className={css.imageContainer}
+                    ></div>
+                    <div
+                        id={css.estimateDetailsContainer}
+                        className={css.imageContainer}
+                    ></div>
+                    <div id={css.closeButtonContainer}>
+                        <button
+                            id={css.closeButton}
+                            className={css.button}
+                            commandfor="dialog"
+                            command="close"
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
             </dialog>
             <div id={css.submitButtonContainer}>

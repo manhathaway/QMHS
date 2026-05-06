@@ -90,18 +90,25 @@
 }
 
 .dialog {
-    width: 90svw;
+    width: fit-content;
     height: 90svh;
     margin: auto;
     border: none;
 }
 
 #dialogContainer {
+    padding: 15px;
     overflow: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 15px;
+}
+
+#submitButton,
+#closeButton {
+    padding: 0 10px;
 }
 
 #submitButtonContainer {
@@ -116,7 +123,25 @@
     padding: 10px 0;
 }
 
-#submitButton,
-#closeButton {
-    padding: 0 10px;
+.imageContainer {
+    border: 1px solid darkgray;
+    border-radius: 2px;
+}
+
+#newCustomerContainer {
+    width: 386px;
+    height: 426px;
+    background-image: url(../resources/new_customer.png);
+}
+
+#addJobContainer {
+    width: 386px;
+    height: 144px;
+    background-image: url(../resources/add_job.png);
+}
+
+#estimateDetailsContainer {
+    width: 577px;
+    height: 285px;
+    background-image: url(../resources/estimate_details.png);
 }
