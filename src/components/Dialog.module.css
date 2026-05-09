@@ -1,16 +1,17 @@
 .dialog {
     width: fit-content;
-    height: 90svh;
+    height: 90vh;
     margin: auto;
     border: none;
 }
 
 #dialogContainer {
+    min-height: calc(90vh - 51px);
     padding: 15px;
     overflow: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 15px;
 }
@@ -53,4 +54,79 @@
 
 #closeButton {
     padding: 0 10px;
+}
+
+.CopyText {
+    padding: 3px;
+    cursor: pointer;
+    background-color: rgba(255, 0, 0, 0.25);
+    font-size: 0.8rem;
+    line-height: 10px;
+    
+    position: relative;
+}
+
+#name {
+    width: 193px;
+    height: 16.5px;
+
+    right: -115px;
+    bottom: -10px;
+}
+
+#address {
+    width: 182px;
+    height: 79.5px;
+    
+    right: -154px;
+    bottom: -317px;
+}
+
+#job_name {
+    width: 193px;
+    height: 16.5px;
+
+    right: -116px;
+    bottom: -11px;
+}
+
+#class {
+    width: 177px;
+    height: 18.5px;
+
+    right: -56px;
+    bottom: -16.5px;
+}
+
+#contract_date {
+    width: 100px;
+    height: 19px;
+    
+    right: -137px;
+    bottom: -62px;
+}
+
+#salesman {
+    width: 85.5px;
+    height: 19px;
+    
+    right: -365px;
+    bottom: -152px;
+}
+
+#source {
+    width: 100px;
+    height: 19px;
+    
+    right: -456px;
+    bottom: -133px;
+}
+
+#price {
+    text-align: right;
+    width: 167px;
+    height: 18.5px;
+    
+    right: -344.5px;
+    bottom: -179px;
 }

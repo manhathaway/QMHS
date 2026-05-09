@@ -2,7 +2,8 @@ import { useMemo, useState, useEffect } from 'react';
 
 import css from './Form.module.css';
 
-import {FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES} from '../data';
+import {FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES, AZ_CITIES} from '../data';
+
 import {
     buildInitialState,
     updateField,
@@ -18,6 +19,7 @@ import Button from './subcomponents/Button';
 
 const SELECT_DATA = {
     salesman: SALESMEN,
+    cities: AZ_CITIES,
     sources: SOURCES,
     depositType: DEPOSIT_TYPES
 };
@@ -27,9 +29,9 @@ const Form = () => {
         buildInitialState(FORM_SCHEMA)
     );
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData]);
+    // useEffect(() => {
+    //     console.log(formData);
+    // }, [formData]);
 
     const selectedSalesman = useMemo(() => {
         return SALESMEN.list.find(
@@ -37,11 +39,9 @@ const Form = () => {
         );
     }, [formData.salesman]);
 
-    const ctx = { selectedSalesman };
-
     const isEnabled = (field) => {
         if (!field.enabledWhen) return true;
-        return field.enabledWhen(formData, ctx);
+        return field.enabledWhen(formData, { selectedSalesman });
     };
 
     return (
@@ -61,6 +61,7 @@ const Form = () => {
                                     onChange={(e) =>
                                         updateField(setFormData, field.id, e.target.value)
                                     }
+                                    disabled={!isEnabled(field)}
                                 >
                                     {SELECT_DATA[field.data].list.map(
                                         (item, index) => (
@@ -113,7 +114,7 @@ const Form = () => {
                     );
                 })}
             </form>
-            <Dialog />
+            <Dialog formData={formData} />
 
             <div id={css.submitButtonContainer}>
                 <Button id={css.submitButton} command="show-modal" commandfor="dialog">

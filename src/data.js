@@ -14,7 +14,8 @@ const FORM_SCHEMA = [
     {
         id: 'city',
         label: 'City',
-        type: 'text',
+        type: 'select',
+        data: 'cities',
         enabledWhen: (form, ctx) =>
             ctx.selectedSalesman?.region === 'AZ'
     },
@@ -24,7 +25,7 @@ const FORM_SCHEMA = [
 
     { id: 'sources', label: 'Sources', type: 'select', data: 'sources' },
 
-    { id: 'job_title', label: 'Job Title', type: 'text' },
+    { id: 'job_name', label: 'Job Name', type: 'text' },
     { id: 'job_item', label: 'Job Item', type: 'text' },
     { id: 'job_description', label: 'Job Description', type: 'textarea' },
 
@@ -85,16 +86,28 @@ const SALESMEN = {
     ]
 };
 
+const AZ_CITIES = {
+    name: 'AZ Cities',
+    list: [
+        { name: '-' },
+        { name: 'Apache Junction', class: 'MP' },
+        { name: 'Pheonix', class: 'MP' },
+        { name: 'Tucson', class: 'TU' }
+    ]
+};
+
 const SOURCES = {
     name: 'sources',
     list: [
         { name: '-' },
-        { name: 'Postcard' },
-        { name: 'Park Magazine' },
-        { name: 'Web Ads.' },
-        { name: 'Carlyn' },
-        { name: 'Viki' },
-        { name: 'Jose' }
+        { name: 'Postcard', type: 'CI', abbreviation: 'PC' },
+        { name: 'Park Magazine', type: 'CI', abbreviation: 'PM' },
+        { name: 'Web Advertizements', type: 'CI', abbreviation: 'Web' },
+        { name: 'Go Back' },
+        { name: 'Upsale' },
+        { name: 'Carlyn', type: 'WC' },
+        { name: 'Viki', type: 'WC' },
+        { name: 'Jose', type: 'WC' }
     ]
 };
 
@@ -109,4 +122,4 @@ const DEPOSIT_TYPES = {
     ]
 };
 
-export { FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES };
+export { FORM_SCHEMA, SALESMEN, AZ_CITIES, SOURCES, DEPOSIT_TYPES };
