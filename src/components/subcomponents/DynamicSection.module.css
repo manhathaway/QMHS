@@ -1,0 +1,28 @@
+.addButton,
+.removeButton {
+    width: 30px;
+}
+
+.dynamicContainer {
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dynamicRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 30px;
+    gap: 10px;
+}
+
+.addContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 30px;
+}
+
+.addContainer:not(:last-child) {
+    border-bottom: 1px solid lightgray;
+}

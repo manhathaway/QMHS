@@ -9,16 +9,6 @@
     grid-template-columns: 1fr 250px;
     justify-content: space-between;
     padding-bottom: 15px;
-}
-
-.addContainer {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 30px;
-}
-
-.entryContainer,
-.addContainer:not(:last-child) {
     border-bottom: 1px solid lightgray;
 }
 
@@ -65,52 +55,6 @@
     opacity: 50%;
 }
 
-.dynamicContainer {
-    padding: 15px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.dynamicRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr 30px;
-    gap: 10px;
-}
-
-.button {
-    height: 30px;
-    font-size: 1rem;
-}
-
-.addButton,
-.removeButton {
-    width: 30px;
-}
-
-.dialog {
-    width: fit-content;
-    height: 90svh;
-    margin: auto;
-    border: none;
-}
-
-#dialogContainer {
-    padding: 15px;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-#submitButton,
-#closeButton {
-    padding: 0 10px;
-}
-
 #submitButtonContainer {
     position: sticky;
     bottom: 0;
@@ -123,25 +67,6 @@
     padding: 10px 0;
 }
 
-.imageContainer {
-    border: 1px solid darkgray;
-    border-radius: 2px;
-}
-
-#newCustomerContainer {
-    width: 386px;
-    height: 426px;
-    background-image: url(../resources/new_customer.png);
-}
-
-#addJobContainer {
-    width: 386px;
-    height: 144px;
-    background-image: url(../resources/add_job.png);
-}
-
-#estimateDetailsContainer {
-    width: 577px;
-    height: 285px;
-    background-image: url(../resources/estimate_details.png);
+#submitButton {
+    padding: 0 10px;
 }
