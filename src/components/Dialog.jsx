@@ -9,22 +9,28 @@ const getSelectedEntry = (data, value) => {
     );
 };
 
-const CopyText = ({ children, ...props }) => {
+const required = (field, errorText) => field || (errorText || '[MISSING]');
+
+const CopyText = ({ children, ...props}) => {
+    const display = required(children);
+
     return (
         <p
-            onClick={() => {navigator.clipboard.writeText(children || 'MISSING')}}
+            onClick={() =>
+                navigator.clipboard.writeText(display)
+            }
             className={css.CopyText}
             {...props}
         >
-            {children || 'MISSING'}
+            {display}
         </p>
-    )
+    );
 };
 
 const Dialog = ({ formData }) => {
-    const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman);
+    const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman) || null;
     const cityObj = getSelectedEntry(AZ_CITIES, formData.city) || null;
-    const sourceObj = getSelectedEntry(SOURCES, formData.sources);
+    const sourceObj = getSelectedEntry(SOURCES, formData.sources) || null;
 
     const getClass = () => {
         if (salesmanObj) {
@@ -38,7 +44,7 @@ const Dialog = ({ formData }) => {
                 }
             }
         } else {
-            return 'MISSING';
+            return null;
         }
     }
 
@@ -52,8 +58,59 @@ const Dialog = ({ formData }) => {
                 return sourceObj.name
             }
         } else {
-            return 'MISSING';
+            return null;
         }
+    };
+
+    const buildAddressText = () => {
+        let text = '';
+        const name = required(formData.name.replace(' ', '').split(',').reverse().join(' '), '[MISSING NAME]');
+        const address = required(formData.address, '[MISSING ADDRESS]')
+
+        text += `${name}\n`;
+        text += address;
+
+        return text;
+    }
+
+    const buildEstimateText = () => {
+        let text = '';
+        
+        const job_description = required(formData.job_description, '[MISSING DESCRIPTION]');
+        const amount_financed = required(formData.amount_financed);
+        const account_number = required(formData.account_number);
+        const price = required(formData.price);
+        const deposit = required(formData.deposit);
+
+        text += `${job_description}\n`;
+
+        if (formData.financed) {
+            text += '\nSYNCHRONY\n';
+            text += `   - Amount Financed: ${amount_financed}\n`;
+            text += `   - Account Number: ${account_number}\n`;
+        }
+
+        if (formData.progress_payments.length) {
+            text += '\nPROGRESS PAYMENTS:\n';
+            formData.progress_payments.forEach(payment => {
+                text += `   - ${required(payment.name)}: ${required(payment.price)}\n`;
+            });
+        }
+
+        if (formData.discounts.length) {
+            text += '\nDISCOUNTS:\n';
+            formData.discounts.forEach(discount => {
+                text += `   - ${required(discount.name)}: ${required(discount.price)}\n`;
+            });
+        }
+
+        text += `\nPrice: ${price}`;
+        text += `\nDeposit: ${deposit}`;
+        if (formData.depositType) {
+            text += ` - ${formData.depositType}`;
+        }
+
+        return text;
     };
 
     return (
@@ -62,7 +119,7 @@ const Dialog = ({ formData }) => {
                 {formData.new_customer &&
                     <div id={css.newCustomerContainer} className={css.imageContainer}>
                         <CopyText id={css.name}>{formData.name}</CopyText>
-                        <CopyText id={css.address}>{formData.address}</CopyText>
+                        <CopyText id={css.address}>{buildAddressText()}</CopyText>
                     </div>
                 }
                 <div id={css.addJobContainer} className={css.imageContainer}>
@@ -74,6 +131,11 @@ const Dialog = ({ formData }) => {
                     <CopyText id={css.salesman}>{formData.salesman}</CopyText>
                     <CopyText id={css.source}>{getSource()}</CopyText>
                     <CopyText id={css.price}>{formData.price}</CopyText>
+                </div>
+                <div id={css.estimateDescriptionContainer} className={css.imageContainer}>
+                    <CopyText id={css.job_description}>
+                        {buildEstimateText()}
+                    </CopyText>
                 </div>
             </div>
 

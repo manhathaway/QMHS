@@ -39,6 +39,12 @@
     background-image: url(../resources/estimate_details.png);
 }
 
+#estimateDescriptionContainer {
+    width: 417px;
+    height: 200px;
+    background-image: url(../resources/estimate_description.png);
+}
+
 #closeButtonContainer {
     position: sticky;
     bottom: 0;
@@ -69,15 +75,17 @@
 #name {
     width: 193px;
     height: 16.5px;
-
     right: -115px;
     bottom: -10px;
 }
 
 #address {
+    white-space: pre-line;
+    overflow: auto;
+    line-height: 15px;
+
     width: 182px;
     height: 79.5px;
-    
     right: -154px;
     bottom: -317px;
 }
@@ -85,7 +93,6 @@
 #job_name {
     width: 193px;
     height: 16.5px;
-
     right: -116px;
     bottom: -11px;
 }
@@ -93,7 +100,6 @@
 #class {
     width: 177px;
     height: 18.5px;
-
     right: -56px;
     bottom: -16.5px;
 }
@@ -101,7 +107,6 @@
 #contract_date {
     width: 100px;
     height: 19px;
-    
     right: -137px;
     bottom: -62px;
 }
@@ -109,7 +114,6 @@
 #salesman {
     width: 85.5px;
     height: 19px;
-    
     right: -365px;
     bottom: -152px;
 }
@@ -117,16 +121,27 @@
 #source {
     width: 100px;
     height: 19px;
-    
     right: -456px;
     bottom: -133px;
 }
 
 #price {
     text-align: right;
+
     width: 167px;
     height: 18.5px;
-    
     right: -344.5px;
     bottom: -179px;
+}
+
+#job_description {
+    white-space: pre-line;
+    padding: 3px 5px;
+    overflow: auto;
+    line-height: 14px;
+
+    width: 348px;
+    height: 159px;
+    right: -12.5px;
+    bottom: -29px;
 }

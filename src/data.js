@@ -26,7 +26,6 @@ const FORM_SCHEMA = [
     { id: 'sources', label: 'Sources', type: 'select', data: 'sources' },
 
     { id: 'job_name', label: 'Job Name', type: 'text' },
-    { id: 'job_item', label: 'Job Item', type: 'text' },
     { id: 'job_description', label: 'Job Description', type: 'textarea' },
 
     { id: 'price', label: 'Price', type: 'text' },
