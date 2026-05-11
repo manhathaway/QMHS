@@ -2,12 +2,17 @@
     width: fit-content;
     height: 90vh;
     margin: auto;
+    padding: 0 15px;
     border: none;
 }
 
+.dialog:focus {
+    outline: none;
+}
+
 #dialogContainer {
-    min-height: calc(90vh - 51px);
-    padding: 15px;
+    min-height: 90vh;
+    min-width: fit-content;
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -45,10 +50,16 @@
     background-image: url(../resources/estimate_description.png);
 }
 
+#crmNoteContainer {
+    width: 644px;
+    height: 253px;
+    background-image: url(../resources/crm_note.png);
+}
+
 #closeButtonContainer {
+    width: 100%;
     position: sticky;
     bottom: 0;
-    margin: 0 15px;
 
     background: white;
     border-top: 1px solid darkgray;
@@ -144,4 +155,14 @@
     height: 159px;
     right: -12.5px;
     bottom: -29px;
+}
+
+#crm_note {
+    white-space: pre-line;
+    line-height: 15px;
+    
+    width: 572px;
+    height: 60px;
+    right: -35px;
+    bottom: -62.5px;
 }

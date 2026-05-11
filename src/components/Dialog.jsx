@@ -28,34 +28,43 @@ const CopyText = ({ children, ...props}) => {
 };
 
 const Dialog = ({ formData }) => {
-    const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman) || null;
-    const cityObj = getSelectedEntry(AZ_CITIES, formData.city) || null;
-    const sourceObj = getSelectedEntry(SOURCES, formData.sources) || null;
+    const name = required(formData.name);
+    const addressName = formData.name.replace(' ', '').split(',').reverse().join(' ') || '[MISSING NAME]';
+    const address = required(formData.address, '[MISSING ADDRESS]');
+    const salesman = required(formData.salesman);
+    const city = required(formData.city);
+    const email_date = required(formData.email_date);
+    const contract_date = required(formData.contract_date);
+    const sources = required(formData.sources);
+    const job_name = required(formData.job_name);
+    const job_description = required(formData.job_description, '[MISSING DESCRIPTION]');
+    const price = required(formData.price);
+    const deposit = required(formData.deposit);
+    const amount_financed = required(formData.amount_financed);
+    const account_number = required(formData.account_number);
+    
+    const salesmanObj = getSelectedEntry(SALESMEN, salesman);
+    const cityObj = getSelectedEntry(AZ_CITIES, city);
+    const sourceObj = getSelectedEntry(SOURCES, sources);
 
     const getClass = () => {
         if (salesmanObj) {
-            if (salesmanObj.region === 'CA'){
-                return salesmanObj.subregion;
-            } else {
-                if (cityObj) {
-                    return cityObj.subregion;
-                } else {
-                    return 'N/A'
-                }
-            }
+            if (salesmanObj.region === 'CA') return salesmanObj.subregion;
+            if (cityObj) return cityObj.subregion;
+            return 'N/A';
         } else {
             return null;
         }
-    }
+    };
 
     const getSource = () => {
         if (sourceObj) {
             if (sourceObj.type && sourceObj.abbreviation) {
-                return `${sourceObj.type} - ${sourceObj.abbreviation}`
+                return `${sourceObj.type} - ${sourceObj.abbreviation}`;
             } else if (sourceObj.type) {
-                return `${sourceObj.type} - ${sourceObj.name}`
+                return `${sourceObj.type} - ${sourceObj.name}`;
             } else {
-                return sourceObj.name
+                return sourceObj.name;
             }
         } else {
             return null;
@@ -64,23 +73,15 @@ const Dialog = ({ formData }) => {
 
     const buildAddressText = () => {
         let text = '';
-        const name = required(formData.name.replace(' ', '').split(',').reverse().join(' '), '[MISSING NAME]');
-        const address = required(formData.address, '[MISSING ADDRESS]')
 
-        text += `${name}\n`;
+        text += `${addressName}\n`;
         text += address;
 
         return text;
-    }
+    };
 
     const buildEstimateText = () => {
         let text = '';
-        
-        const job_description = required(formData.job_description, '[MISSING DESCRIPTION]');
-        const amount_financed = required(formData.amount_financed);
-        const account_number = required(formData.account_number);
-        const price = required(formData.price);
-        const deposit = required(formData.deposit);
 
         text += `${job_description}\n`;
 
@@ -113,29 +114,40 @@ const Dialog = ({ formData }) => {
         return text;
     };
 
+    const buildNoteText = () => {
+        let text = '';
+
+        text += `${contract_date} - ${price} - ${salesman}:\n`;
+        text += `- Job entered, folder made.\n`;
+        text += `- Sales email received: ${email_date}\n`;
+
+        return text;
+    };
+
     return (
         <dialog id="dialog" className={css.dialog}>
             <div id={css.dialogContainer}>
                 {formData.new_customer &&
                     <div id={css.newCustomerContainer} className={css.imageContainer}>
-                        <CopyText id={css.name}>{formData.name}</CopyText>
+                        <CopyText id={css.name}>{name}</CopyText>
                         <CopyText id={css.address}>{buildAddressText()}</CopyText>
                     </div>
                 }
                 <div id={css.addJobContainer} className={css.imageContainer}>
-                    <CopyText id={css.job_name}>{formData.job_name}</CopyText>
+                    <CopyText id={css.job_name}>{job_name}</CopyText>
                 </div>
                 <div id={css.estimateDetailsContainer} className={css.imageContainer}>
                     <CopyText id={css.class}>{getClass()}</CopyText>
-                    <CopyText id={css.contract_date}>{formData.contract_date}</CopyText>
-                    <CopyText id={css.salesman}>{formData.salesman}</CopyText>
+                    <CopyText id={css.contract_date}>{contract_date}</CopyText>
+                    <CopyText id={css.salesman}>{salesman}</CopyText>
                     <CopyText id={css.source}>{getSource()}</CopyText>
-                    <CopyText id={css.price}>{formData.price}</CopyText>
+                    <CopyText id={css.price}>{price}</CopyText>
                 </div>
                 <div id={css.estimateDescriptionContainer} className={css.imageContainer}>
-                    <CopyText id={css.job_description}>
-                        {buildEstimateText()}
-                    </CopyText>
+                    <CopyText id={css.job_description}>{buildEstimateText()}</CopyText>
+                </div>
+                <div id={css.crmNoteContainer} className={css.imageContainer}>
+                    <CopyText id={css.crm_note}>{buildNoteText()}</CopyText>
                 </div>
             </div>
 
