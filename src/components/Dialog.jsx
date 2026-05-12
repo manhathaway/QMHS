@@ -19,25 +19,23 @@ const getSelectedEntry = (data, value) => {
 
 const required = (field, errorText) => field || (errorText || '[MISSING]');
 
-const CopyText = ({ children, ...props}) => {
-    const display = required(children);
-
+const CopyText = ({ children, overide, ...props }) => {
     return (
         <div
             onClick={() =>
-                navigator.clipboard.writeText(display)
+                navigator.clipboard.writeText(overide || required(children))
             }
             className={css.CopyText}
             {...props}
         >
-            {display}
+            {required(children)}
         </div>
     );
 };
 
 const Dialog = ({ formData }) => {
     const name = required(formData.name);
-    const addressName = formData.name.replace(' ', '').split(',').reverse().join(' ') || '[MISSING NAME]';
+    const addressName = required(formData.name.replace(' ', '').split(',').reverse().join(' '), '[MISSING NAME');
     const address = required(formData.address, '[MISSING ADDRESS]');
     const salesman = required(formData.salesman);
     const city = required(formData.city);
@@ -49,9 +47,9 @@ const Dialog = ({ formData }) => {
     const deposit = required(formData.deposit);
     const amount_financed = required(formData.amount_financed);
     const account_number = required(formData.account_number);
-    
-    const salesmanObj = getSelectedEntry(SALESMEN, salesman);
-    const cityObj = getSelectedEntry(AZ_CITIES, city);
+
+    const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman);
+    const cityObj = getSelectedEntry(AZ_CITIES, formData.city);
     const sourceObj = getSelectedEntry(SOURCES, formData.sources);
 
     const jobClass = required(getClass(salesmanObj, cityObj));
@@ -59,7 +57,7 @@ const Dialog = ({ formData }) => {
     const jobSource = required(getSource(sourceObj));
 
     const addressText = buildAddressText(addressName, address);
-    const estimateText = buildEstimateText(job_description, formData, amount_financed, account_number, price, deposit);
+    const estimateText = buildEstimateText(formData, job_description, amount_financed, account_number, price, deposit);
     const noteText = buildNoteText(contract_date, price, salesman, email_date);
 
     const estimateDetails = {
@@ -103,20 +101,20 @@ const Dialog = ({ formData }) => {
                 <div id={css.crmNoteContainer} className={css.imageContainer}>
                     <CopyText id={css.crm_note}>{noteText}</CopyText>
                 </div>
-                <div id={css.excelRowContainer} className={css.CopyText}>
+                <CopyText id={css.excelRowContainer} overide={Object.values(excelRow).join('\t')}>
                     <table>
-                        <tr id={css.excelRowHeaders}>
+                        <tr>
                             {Object.keys(excelRow).map((heading, index) =>
-                                <th key={index}>{heading}</th>
+                                <th key={index} className={css.excelRowHeaders}>{heading}</th>
                             )}
                         </tr>
-                        <tr id={css.excelRowData}>
+                        <tr>
                             {Object.values(excelRow).map((data, index) =>
-                                <td key={index}>{data}</td>
+                                <td key={index} className={css.excelRowData}>{data}</td>
                             )}
                         </tr>
                     </table>
-                </div>
+                </CopyText>
             </div>
 
             <div id={css.closeButtonContainer}>

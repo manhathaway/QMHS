@@ -37,7 +37,7 @@ const buildAddressText = (addressName, address) => {
     return text;
 };
 
-const buildEstimateText = (job_description, formData, amount_financed, account_number, price, deposit) => {
+const buildEstimateText = (formData, job_description, amount_financed, account_number, price, deposit) => {
     let text = '';
 
     text += `${job_description}\n`;
@@ -88,4 +88,4 @@ export {
     buildAddressText,
     buildEstimateText,
     buildNoteText,
- };
+};
