@@ -1,8 +1,8 @@
 .dialog {
     width: fit-content;
+    max-width: 90vw;
     height: 90vh;
     margin: auto;
-    padding: 0 15px;
     border: none;
 }
 
@@ -13,6 +13,7 @@
 #dialogContainer {
     min-height: 90vh;
     min-width: fit-content;
+    margin-top: 15px;
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -76,7 +77,6 @@
 .CopyText {
     padding: 3px;
     cursor: pointer;
-    background-color: rgba(255, 0, 0, 0.25);
     font-size: 0.8rem;
     line-height: 10px;
     
@@ -165,4 +165,22 @@
     height: 60px;
     right: -35px;
     bottom: -62.5px;
+}
+
+#excelRowContainer {
+    max-width: 482px;
+    overflow: auto;
+}
+
+#excelRowHeaders * {
+    letter-spacing: 0.5px;
+    background-color: #6380A1;
+    color: white;
+    padding: 10px;
+}
+
+#excelRowData * {
+    border: 1px solid lightgray;
+    white-space: nowrap;
+    padding: 5px;
 }

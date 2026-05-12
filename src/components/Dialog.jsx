@@ -2,6 +2,14 @@ import css from './Dialog.module.css';
 import { useMemo, useEffect } from 'react';
 import IconButton from './subcomponents/Button';
 import { SALESMEN, AZ_CITIES, SOURCES } from '../data.js';
+import {
+    getClass,
+    getStatus,
+    getSource,
+    buildAddressText,
+    buildEstimateText,
+    buildNoteText
+} from '../dialogHelpers.js';
 
 const getSelectedEntry = (data, value) => {
     return data.list.find(
@@ -15,7 +23,7 @@ const CopyText = ({ children, ...props}) => {
     const display = required(children);
 
     return (
-        <p
+        <div
             onClick={() =>
                 navigator.clipboard.writeText(display)
             }
@@ -23,7 +31,7 @@ const CopyText = ({ children, ...props}) => {
             {...props}
         >
             {display}
-        </p>
+        </div>
     );
 };
 
@@ -35,7 +43,6 @@ const Dialog = ({ formData }) => {
     const city = required(formData.city);
     const email_date = required(formData.email_date);
     const contract_date = required(formData.contract_date);
-    const sources = required(formData.sources);
     const job_name = required(formData.job_name);
     const job_description = required(formData.job_description, '[MISSING DESCRIPTION]');
     const price = required(formData.price);
@@ -45,83 +52,32 @@ const Dialog = ({ formData }) => {
     
     const salesmanObj = getSelectedEntry(SALESMEN, salesman);
     const cityObj = getSelectedEntry(AZ_CITIES, city);
-    const sourceObj = getSelectedEntry(SOURCES, sources);
+    const sourceObj = getSelectedEntry(SOURCES, formData.sources);
 
-    const getClass = () => {
-        if (salesmanObj) {
-            if (salesmanObj.region === 'CA') return salesmanObj.subregion;
-            if (cityObj) return cityObj.subregion;
-            return 'N/A';
-        } else {
-            return null;
-        }
-    };
+    const jobClass = required(getClass(salesmanObj, cityObj));
+    const jobStatus = required(getStatus(jobClass));
+    const jobSource = required(getSource(sourceObj));
 
-    const getSource = () => {
-        if (sourceObj) {
-            if (sourceObj.type && sourceObj.abbreviation) {
-                return `${sourceObj.type} - ${sourceObj.abbreviation}`;
-            } else if (sourceObj.type) {
-                return `${sourceObj.type} - ${sourceObj.name}`;
-            } else {
-                return sourceObj.name;
-            }
-        } else {
-            return null;
-        }
-    };
+    const addressText = buildAddressText(addressName, address);
+    const estimateText = buildEstimateText(job_description, formData, amount_financed, account_number, price, deposit);
+    const noteText = buildNoteText(contract_date, price, salesman, email_date);
 
-    const buildAddressText = () => {
-        let text = '';
+    const estimateDetails = {
+        class: jobClass,
+        contract_date: contract_date,
+        salesman: salesman,
+        source: jobSource,
+        price: price
+    }
 
-        text += `${addressName}\n`;
-        text += address;
-
-        return text;
-    };
-
-    const buildEstimateText = () => {
-        let text = '';
-
-        text += `${job_description}\n`;
-
-        if (formData.financed) {
-            text += '\nSYNCHRONY\n';
-            text += `   - Amount Financed: ${amount_financed}\n`;
-            text += `   - Account Number: ${account_number}\n`;
-        }
-
-        if (formData.progress_payments.length) {
-            text += '\nPROGRESS PAYMENTS:\n';
-            formData.progress_payments.forEach(payment => {
-                text += `   - ${required(payment.name)}: ${required(payment.price)}\n`;
-            });
-        }
-
-        if (formData.discounts.length) {
-            text += '\nDISCOUNTS:\n';
-            formData.discounts.forEach(discount => {
-                text += `   - ${required(discount.name)}: ${required(discount.price)}\n`;
-            });
-        }
-
-        text += `\nPrice: ${price}`;
-        text += `\nDeposit: ${deposit}`;
-        if (formData.depositType) {
-            text += ` - ${formData.depositType}`;
-        }
-
-        return text;
-    };
-
-    const buildNoteText = () => {
-        let text = '';
-
-        text += `${contract_date} - ${price} - ${salesman}:\n`;
-        text += `- Job entered, folder made.\n`;
-        text += `- Sales email received: ${email_date}\n`;
-
-        return text;
+    const excelRow = {
+        Class: jobClass,
+        Date: contract_date,
+        Salesman: salesman,
+        Customer: name,
+        Job: job_name,
+        Price: price,
+        Status: status
     };
 
     return (
@@ -130,24 +86,36 @@ const Dialog = ({ formData }) => {
                 {formData.new_customer &&
                     <div id={css.newCustomerContainer} className={css.imageContainer}>
                         <CopyText id={css.name}>{name}</CopyText>
-                        <CopyText id={css.address}>{buildAddressText()}</CopyText>
+                        <CopyText id={css.address}>{addressText}</CopyText>
                     </div>
                 }
                 <div id={css.addJobContainer} className={css.imageContainer}>
                     <CopyText id={css.job_name}>{job_name}</CopyText>
                 </div>
                 <div id={css.estimateDetailsContainer} className={css.imageContainer}>
-                    <CopyText id={css.class}>{getClass()}</CopyText>
-                    <CopyText id={css.contract_date}>{contract_date}</CopyText>
-                    <CopyText id={css.salesman}>{salesman}</CopyText>
-                    <CopyText id={css.source}>{getSource()}</CopyText>
-                    <CopyText id={css.price}>{price}</CopyText>
+                    {Object.entries(estimateDetails).map(([key, value], index) =>
+                        <CopyText key={index} id={css[key]}>{value}</CopyText>
+                    )}
                 </div>
                 <div id={css.estimateDescriptionContainer} className={css.imageContainer}>
-                    <CopyText id={css.job_description}>{buildEstimateText()}</CopyText>
+                    <CopyText id={css.job_description}>{estimateText}</CopyText>
                 </div>
                 <div id={css.crmNoteContainer} className={css.imageContainer}>
-                    <CopyText id={css.crm_note}>{buildNoteText()}</CopyText>
+                    <CopyText id={css.crm_note}>{noteText}</CopyText>
+                </div>
+                <div id={css.excelRowContainer} className={css.CopyText}>
+                    <table>
+                        <tr id={css.excelRowHeaders}>
+                            {Object.keys(excelRow).map((heading, index) =>
+                                <th key={index}>{heading}</th>
+                            )}
+                        </tr>
+                        <tr id={css.excelRowData}>
+                            {Object.values(excelRow).map((data, index) =>
+                                <td key={index}>{data}</td>
+                            )}
+                        </tr>
+                    </table>
                 </div>
             </div>
 
