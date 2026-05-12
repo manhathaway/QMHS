@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 
 import css from './Form.module.css';
 
-import {FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES, AZ_CITIES} from '../data';
+import { FORM_SCHEMA, SALESMEN, SOURCES, DEPOSIT_TYPES, AZ_CITIES } from '../data';
 
 import {
     buildInitialState,
@@ -10,7 +10,8 @@ import {
     updateCheckbox,
     addRow,
     updateRow,
-    removeRow
+    removeRow,
+    formatCurrency
 } from '../formHelpers';
 
 import Dialog from './Dialog';
@@ -85,13 +86,22 @@ const Form = () => {
                                         width: field.type !== 'checkbox' ? '100%' : '30px'
                                     }}
                                     type={field.type}
-                                    value={field.type !== 'checkbox' ? formData[field.id]: undefined}
+                                    value={field.type !== 'checkbox' ? formData[field.id] : undefined}
                                     checked={field.type === 'checkbox' ? formData[field.id] : undefined}
                                     onChange={(e) =>
                                         field.type === 'checkbox'
                                             ? updateCheckbox(setFormData, FORM_SCHEMA, field.id, e.target.checked)
                                             : updateField(setFormData, field.id, e.target.value)
                                     }
+                                    onBlur={(e) => {
+                                        if (field.currency) {
+                                            updateField(
+                                                setFormData,
+                                                field.id,
+                                                formatCurrency(e.target.value)
+                                            );
+                                        }
+                                    }}
                                     disabled={!isEnabled(field)}
                                 />
                             )}
@@ -116,7 +126,10 @@ const Form = () => {
             </form>
             <Dialog formData={formData} />
 
-            <div id={css.submitButtonContainer}>
+            <div id={css.formButtonContainer}>
+                <Button id={css.clearButton} onClick={() => setFormData(buildInitialState(FORM_SCHEMA))}>
+                    Clear
+                </Button>
                 <Button id={css.submitButton} command="show-modal" commandfor="dialog">
                     Map Data
                 </Button>

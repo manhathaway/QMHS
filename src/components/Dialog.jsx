@@ -2,6 +2,7 @@ import css from './Dialog.module.css';
 import { useMemo, useEffect } from 'react';
 import IconButton from './subcomponents/Button';
 import { SALESMEN, AZ_CITIES, SOURCES } from '../data.js';
+import { formatCurrency } from '../formHelpers.js';
 import {
     getClass,
     getStatus,
@@ -35,18 +36,22 @@ const CopyText = ({ children, overide, ...props }) => {
 
 const Dialog = ({ formData }) => {
     const name = required(formData.name);
-    const addressName = required(formData.name.replace(' ', '').split(',').reverse().join(' '), '[MISSING NAME');
     const address = required(formData.address, '[MISSING ADDRESS]');
+    const addressName = required(formData.name.replace(' ', '').split(',').reverse().join(' '), '[MISSING NAME]');
     const salesman = required(formData.salesman);
     const city = required(formData.city);
     const email_date = required(formData.email_date);
-    const contract_date = required(formData.contract_date);
+    const contract_date = required(formData.contract_date.split('-').slice(1).concat(formData.contract_date.split('-')[0]).join('/'));
     const job_name = required(formData.job_name);
     const job_description = required(formData.job_description, '[MISSING DESCRIPTION]');
     const price = required(formData.price);
+    const price_num = required(Number(formData.price.replace(/[^0-9.-]+/g, "")));
     const deposit = required(formData.deposit);
+    const deposit_num = required(Number(formData.deposit.replace(/[^0-9.-]+/g, "")));
+    const balance = required(formatCurrency(price_num - deposit_num));
     const amount_financed = required(formData.amount_financed);
     const account_number = required(formData.account_number);
+
 
     const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman);
     const cityObj = getSelectedEntry(AZ_CITIES, formData.city);
@@ -57,7 +62,7 @@ const Dialog = ({ formData }) => {
     const jobSource = required(getSource(sourceObj));
 
     const addressText = buildAddressText(addressName, address);
-    const estimateText = buildEstimateText(formData, job_description, amount_financed, account_number, price, deposit);
+    const estimateText = buildEstimateText(formData, job_description, amount_financed, account_number, price, deposit, balance);
     const noteText = buildNoteText(contract_date, price, salesman, email_date);
 
     const estimateDetails = {
@@ -65,7 +70,7 @@ const Dialog = ({ formData }) => {
         contract_date: contract_date,
         salesman: salesman,
         source: jobSource,
-        price: price
+        price: price_num
     }
 
     const excelRow = {
@@ -74,8 +79,8 @@ const Dialog = ({ formData }) => {
         Salesman: salesman,
         Customer: name,
         Job: job_name,
-        Price: price,
-        Status: status
+        Price: price_num,
+        Status: jobStatus
     };
 
     return (

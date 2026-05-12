@@ -10,3 +10,6 @@ body * {
   padding: 0;
 }
 
+body *:focus {
+  outline: none;
+}

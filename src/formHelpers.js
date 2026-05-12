@@ -68,3 +68,19 @@ export const removeRow = (setFormData, id, index) => {
         [id]: prev[id].filter((_, i) => i !== index)
     }));
 };
+
+export const formatCurrency = (value) => {
+    if (!value) return '';
+
+    const number = parseFloat(
+        value.toString().replace(/[^0-9.-]+/g, '')
+    );
+
+    if (isNaN(number)) return '';
+
+    return number.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: Number.isInteger(number) ? 0 : 2
+    });
+};

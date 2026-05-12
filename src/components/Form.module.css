@@ -44,18 +44,12 @@
     border-radius: 2px;
 }
 
-.input:focus,
-.select:focus,
-.textarea:focus {
-    outline: none;
-}
-
 .input:disabled,
 .textarea:disabled {
     opacity: 50%;
 }
 
-#submitButtonContainer {
+#formButtonContainer {
     position: sticky;
     bottom: 0;
 
@@ -63,10 +57,11 @@
     border-top: 1px solid lightgray;
 
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     padding: 10px 0;
 }
 
-#submitButton {
+#submitButton,
+#clearButton {
     padding: 0 10px;
 }

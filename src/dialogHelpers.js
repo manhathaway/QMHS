@@ -8,9 +8,9 @@ const getClass = (salesmanObj, cityObj) => {
     }
 };
 
-const getStatus = (getClass) => {
-    if (getClass === 'AZ') return 'Ready';
-    if (getClass === 'CA') return 'Admin Ready';
+const getStatus = (jobClass) => {
+    if (jobClass === 'AZ') return 'Ready';
+    if (jobClass) return 'Admin Ready';
     return null;
 }
 
@@ -37,7 +37,7 @@ const buildAddressText = (addressName, address) => {
     return text;
 };
 
-const buildEstimateText = (formData, job_description, amount_financed, account_number, price, deposit) => {
+const buildEstimateText = (formData, job_description, amount_financed, account_number, price, deposit, balance) => {
     let text = '';
 
     text += `${job_description}\n`;
@@ -51,14 +51,14 @@ const buildEstimateText = (formData, job_description, amount_financed, account_n
     if (formData.progress_payments.length) {
         text += '\nPROGRESS PAYMENTS:\n';
         formData.progress_payments.forEach(payment => {
-            text += `   - ${required(payment.name)}: ${required(payment.price)}\n`;
+            text += `   - ${payment.name}: ${payment.price}\n`;
         });
     }
 
     if (formData.discounts.length) {
         text += '\nDISCOUNTS:\n';
         formData.discounts.forEach(discount => {
-            text += `   - ${required(discount.name)}: ${required(discount.price)}\n`;
+            text += `   - ${discount.name}: ${discount.price}\n`;
         });
     }
 
@@ -67,6 +67,7 @@ const buildEstimateText = (formData, job_description, amount_financed, account_n
     if (formData.depositType) {
         text += ` - ${formData.depositType}`;
     }
+    text += `\nBalance: ${balance}`
 
     return text;
 };

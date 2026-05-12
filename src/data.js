@@ -28,8 +28,8 @@ const FORM_SCHEMA = [
     { id: 'job_name', label: 'Job Name', type: 'text' },
     { id: 'job_description', label: 'Job Description', type: 'textarea' },
 
-    { id: 'price', label: 'Price', type: 'text' },
-    { id: 'deposit', label: 'Deposit', type: 'text' },
+    { id: 'price', label: 'Price', type: 'text', currency: true },
+    { id: 'deposit', label: 'Deposit', type: 'text', currency: true },
     { id: 'depositType', label: 'Deposit Type', type: 'select', data: 'depositType' },
 
     { id: 'financed', label: 'Financed?', type: 'checkbox' },
@@ -38,6 +38,7 @@ const FORM_SCHEMA = [
         id: 'amount_financed',
         label: 'Amount Financed',
         type: 'text',
+        currency: true,
         enabledWhen: (form) => form.financed
     },
     {
@@ -54,7 +55,7 @@ const FORM_SCHEMA = [
         toggle: 'progress_payments',
         fields: [
             { key: 'name', placeholder: 'Payment Name' },
-            { key: 'price', placeholder: 'Payment Price' }
+            { key: 'price', placeholder: 'Payment Price', currency: true }
         ]
     },
 
@@ -66,7 +67,7 @@ const FORM_SCHEMA = [
         includeInitial: true,
         fields: [
             { key: 'name', placeholder: 'Discount Name' },
-            { key: 'price', placeholder: 'Discount Price' }
+            { key: 'price', placeholder: 'Discount Price', currency: true }
         ]
     }
 ];

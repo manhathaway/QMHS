@@ -1,13 +1,14 @@
 import form_css from '../Form.module.css';
 import css from './DynamicSection.module.css';
 import Button from './Button';
+import { formatCurrency } from '../../formHelpers';
 
 const DynamicSection = ({
     field,
     rows,
     addRow,
     updateRow,
-    removeRow
+    removeRow,
 }) => {
     return (
         <div className={css.addContainer}>
@@ -30,9 +31,12 @@ const DynamicSection = ({
                                 key={f.key}
                                 placeholder={f.placeholder}
                                 value={row[f.key] || ''}
-                                onChange={(e) =>
-                                    updateRow(field.id, i, f.key, e.target.value)
-                                }
+                                onChange={(e) => updateRow(field.id, i, f.key, e.target.value)}
+                                onBlur={(e) => {
+                                    if (f.currency) {
+                                        updateRow(field.id, i, f.key, formatCurrency(e.target.value));
+                                    }
+                                }}
                             />
                         ))}
 
