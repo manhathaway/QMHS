@@ -23,7 +23,7 @@ const FORM_SCHEMA = [
     { id: 'email_date', label: 'Email Date', type: 'text' },
     { id: 'contract_date', label: 'Contract Date', type: 'date' },
 
-    { id: 'sources', label: 'Sources', type: 'select', data: 'sources' },
+    { id: 'sources', label: 'Source', type: 'select', data: 'sources' },
 
     { id: 'job_name', label: 'Job Name', type: 'text' },
     { id: 'job_description', label: 'Job Description', type: 'textarea' },

@@ -34,7 +34,7 @@ const getSource = (sourceObj) => {
 const buildAddressText = (data) => {
     let text = '';
 
-    text += data.address_name;
+    text += `${data.address_name}\n`;
     text += data.address;
 
     return text;

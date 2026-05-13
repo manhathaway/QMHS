@@ -55,11 +55,7 @@ const Dialog = ({ formData }) => {
 
     const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman);
     const cityObj = getSelectedEntry(AZ_CITIES, formData.city);
-    const sourceObj = getSelectedEntry(SOURCES, formData.sources);
-
-    const jobClass = getClass(salesmanObj, cityObj);
-    const jobStatus = getStatus(salesmanObj);
-    const jobSource = getSource(sourceObj);
+    const sourceObj = getSelectedEntry(SOURCES, formData.source);
 
     const addressTextData = {
         address_name: required(formattedFields.address_name),
@@ -68,7 +64,7 @@ const Dialog = ({ formData }) => {
 
     const estimateTextData = {
         job_description: required(formData.job_description),
-        financed: required(formData.financed),
+        financed: formData.financed,
         amount_financed: required(formData.amount_financed),
         account_number: required(formData.account_number),
         progress_payments: required(formData.progress_payments),
@@ -80,10 +76,10 @@ const Dialog = ({ formData }) => {
     };
 
     const estimateDetailsData = {
-        class: required(jobClass),
+        class: required(getClass(salesmanObj)),
         contract_date: required(formattedFields.contract_date),
         salesman: required(formData.salesman),
-        source: required(jobSource),
+        source: required(getSource(sourceObj)),
         price: required(formattedFields.price_number)
     };
 
@@ -95,13 +91,13 @@ const Dialog = ({ formData }) => {
     }
 
     const excelRowData = {
-        Class: required(jobClass),
+        Region: required(salesmanObj.region),
         Date: required(formattedFields.contract_date),
         Salesman: required(formData.salesman),
         Customer: required(formData.name),
         Job: required(formData.job_name),
         Price: required(formattedFields.price_number),
-        Status: required(jobStatus)
+        Status: required(getStatus(salesmanObj))
     };
 
     return (
