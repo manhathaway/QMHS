@@ -55,7 +55,7 @@ const Dialog = ({ formData }) => {
 
     const salesmanObj = getSelectedEntry(SALESMEN, formData.salesman);
     const cityObj = getSelectedEntry(AZ_CITIES, formData.city);
-    const sourceObj = getSelectedEntry(SOURCES, formData.source);
+    const sourceObj = getSelectedEntry(SOURCES, formData.sources);
 
     const addressTextData = {
         address_name: required(formattedFields.address_name),
