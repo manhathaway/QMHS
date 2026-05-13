@@ -8,10 +8,13 @@ const getClass = (salesmanObj, cityObj) => {
     }
 };
 
-const getStatus = (jobClass) => {
-    if (jobClass === 'AZ') return 'Ready';
-    if (jobClass) return 'Admin Ready';
-    return null;
+const getStatus = (salesmanObj) => {
+    if (salesmanObj) {
+        if (salesmanObj.region === 'CA') return 'Admin Ready';
+        return 'Ready';
+    } else {
+        return null;
+    }
 }
 
 const getSource = (sourceObj) => {
@@ -28,56 +31,56 @@ const getSource = (sourceObj) => {
     }
 };
 
-const buildAddressText = (addressName, address) => {
+const buildAddressText = (data) => {
     let text = '';
 
-    text += `${addressName}\n`;
-    text += address;
+    text += data.address_name;
+    text += data.address;
 
     return text;
 };
 
-const buildEstimateText = (formData, job_description, amount_financed, account_number, price, deposit, balance) => {
+const buildEstimateText = (data) => {
     let text = '';
 
-    text += `${job_description}\n`;
+    text += `${data.job_description}\n`;
 
-    if (formData.financed) {
+    if (data.financed) {
         text += '\nSYNCHRONY\n';
-        text += `   - Amount Financed: ${amount_financed}\n`;
-        text += `   - Account Number: ${account_number}\n`;
+        text += `   - Amount Financed: ${data.amount_financed}\n`;
+        text += `   - Account Number: ${data.account_number}\n`;
     }
 
-    if (formData.progress_payments.length) {
+    if (data.progress_payments.length) {
         text += '\nPROGRESS PAYMENTS:\n';
-        formData.progress_payments.forEach(payment => {
+        data.progress_payments.forEach(payment => {
             text += `   - ${payment.name}: ${payment.price}\n`;
         });
     }
 
-    if (formData.discounts.length) {
+    if (data.discounts.length) {
         text += '\nDISCOUNTS:\n';
-        formData.discounts.forEach(discount => {
+        data.discounts.forEach(discount => {
             text += `   - ${discount.name}: ${discount.price}\n`;
         });
     }
 
-    text += `\nPrice: ${price}`;
-    text += `\nDeposit: ${deposit}`;
-    if (formData.depositType) {
-        text += ` - ${formData.depositType}`;
+    text += `\nPrice: ${data.price}`;
+    text += `\nDeposit: ${data.deposit}`;
+    if (data.depositType) {
+        text += ` - ${data.depositType}`;
     }
-    text += `\nBalance: ${balance}`
+    text += `\nBalance: ${data.balance}`
 
     return text;
 };
 
-const buildNoteText = (contract_date, price, salesman, email_date) => {
+const buildNoteText = (data) => {
     let text = '';
 
-    text += `${contract_date} - ${price} - ${salesman}:\n`;
+    text += `${data.contract_date} - ${data.price} - ${data.salesman}:\n`;
     text += `- Job entered, folder made.\n`;
-    text += `- Sales email received: ${email_date}\n`;
+    text += `- Sales email received: ${data.email_date}\n`;
 
     return text;
 };

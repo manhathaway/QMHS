@@ -1,20 +1,27 @@
-#title {
-    font-size: 2rem;
-    letter-spacing: 1px;
-    font-weight: 500;
-}
-
-#subtitle {
-    font-size: 1.4rem;
-    letter-spacing: 0.5px;
-    font-weight: 400;
-    color: gray;
-}
-#title,
-#subtitle {
-    text-align: center;
-}
-
 #container {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+    background-color: #202F64;
+    padding: 15px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#titleContainer {
+    text-align: right;
+}
+
+#title {
+    color: white;
+    letter-spacing: 1.5px;
+    font-weight: 400;
+    font-size: 1.4rem;
+}
+
+#subtitle {
+    color: white;
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-size: 1rem;
 }
