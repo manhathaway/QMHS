@@ -76,7 +76,7 @@ const Dialog = ({ formData }) => {
     };
 
     const estimateDetailsData = {
-        class: required(getClass(salesmanObj)),
+        class: required(getClass(salesmanObj, cityObj)),
         contract_date: required(formattedFields.contract_date),
         salesman: required(formData.salesman),
         source: required(getSource(sourceObj)),
@@ -91,7 +91,7 @@ const Dialog = ({ formData }) => {
     }
 
     const excelRowData = {
-        Region: required(salesmanObj.region),
+        Region: required(salesmanObj && salesmanObj.region),
         Date: required(formattedFields.contract_date),
         Salesman: required(formData.salesman),
         Customer: required(formData.name),
