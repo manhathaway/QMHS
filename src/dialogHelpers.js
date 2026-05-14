@@ -1,7 +1,7 @@
 const getClass = (salesmanObj, cityObj) => {
     if (salesmanObj) {
         if (salesmanObj.region === 'CA') return salesmanObj.subregion;
-        if (cityObj) return cityObj.subregion;
+        if (cityObj) return cityObj.class;
         return 'N/A';
     } else {
         return null;
@@ -79,8 +79,17 @@ const buildNoteText = (data) => {
     let text = '';
 
     text += `${data.contract_date} - ${data.price} - ${data.salesman}:\n`;
-    text += `- Job entered, folder made.\n`;
-    text += `- Sales email received: ${data.email_date}\n`;
+    text += `Job entered, folder made.\n`;
+    if ((/^(?:1[0-2]|[1-9]):[0-5]\d(?:AM|PM)$/i).test(data.email_date)) {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+        const today = new Date();
+        const formattedDate = `${days[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}`;
+
+        text += `${formattedDate}, ${data.email_date}`;
+    } else {
+        text += data.email_date;
+    }
 
     return text;
 };
